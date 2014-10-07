@@ -47,8 +47,8 @@ namespace util
 	typename Map<KeyType, ValueType>::Wrapper Map<KeyType, ValueType>::operator[](const KeyType& key)
 	{
 		//return a wrapper object that has a reference to this map and the key that was passed in
-		Wrapper wrapper(*this, key);
-		return wrapper;
+		Map<KeyType, ValueType>::Wrapper result(*this, key);
+		return result;
 	}
 
 	template <typename KeyType, typename ValueType>
@@ -61,6 +61,8 @@ namespace util
 	template <typename KeyType, typename ValueType>
 	ValueType* Map<KeyType, ValueType>::find(const KeyType &key)
 	{
+		ValueType* result = NULL;
+
 		//loop through the keys list to see if the key parameter is in the list
 		for (unsigned int i = 0; i < keys.size(); i++)
 		{
@@ -68,13 +70,11 @@ namespace util
 			//index in the values list
 			if (key == keys[i])
 			{
-				return &values[i];
-			}
-			else //if the key is NOT in the list, return NULL
-			{
-				return NULL;
+				result = &values[i];
 			}
 		}
+
+		return result;
 	}
 
 	template <typename KeyType, typename ValueType>
@@ -82,18 +82,20 @@ namespace util
 	{
 		//if the key is already in the keys list,
 		//change the value corresponding to that key value passed to this method
-		if (find(key))
+		ValueType* p = find(key);
+		if (p != NULL)
 		{
-			values[key] = value;
+			*p = value;
 		}
 		else //if the key is NOT in the list, add it and the value to the end of their lists
 		{
 			keys.push_back(key);
 			values.push_back(value);
+			p = find(key);
 		}
 
 		// return the address of the value, in the values list, that was changed or added
-		return &values[key];
+		return p;
 	}
 
 	/*==========================================================================
@@ -112,10 +114,11 @@ namespace util
 	}
 
 	template <typename KeyType, typename ValueType>
-	Map<KeyType, ValueType>::Wrapper::Wrapper(const Wrapper& rValue)
+	Map<KeyType, ValueType>::Wrapper::Wrapper(const Wrapper& rValue) : map(rValue.map), key(rValue.key)
 	{
 		//in the member initialization list - set the map, the key, and the value
 		//members to the values passed to the constructor
+		value = map.find(rValue.key);
 	}
 
 	template <typename KeyType, typename ValueType>
@@ -124,22 +127,15 @@ namespace util
 		//if the value is null, throw an std::range_error exception
 		//with the text "Key not found in map"
 		//stdexcept is included for this purpose
-		try
+		if (value == NULL)
 		{
-			if (value == NULL)
-			{
-				throw value;
-			}
-			else //if the value is not null return the value (dereferenced)
-			{
-				return *value;
-			}
+			std::range_error exception("Key not found in map.");
+			throw exception;
 		}
-		catch (std::range_error exception)
+		else //if the value is not null return the value (dereferenced)
 		{
-			cout << "Key not found in map." << endl;
+			return *value;
 		}
-
 	}
 
 	template <typename KeyType, typename ValueType>
@@ -148,21 +144,16 @@ namespace util
 		//if the value is null, throw an std::range_error exception
 		//with the text "Key not found in map"
 		//stdexcept is included for this purpose
-		try
+		if (value == NULL)
 		{
-			if (value == NULL)
-			{
-				throw value;
-			}
-			else //if the value is not null return the value pointer
-			{
-				return value;
-			}
+			std::range_error exception("Key not found in map.");
+			throw exception;
 		}
-		catch (std::range_error exception)
+		else //if the value is not null return the value pointer
 		{
-			cout << "Key not found in map." << endl;
+			return value;
 		}
+
 	}
 
 	template <typename KeyType, typename ValueType>
@@ -171,10 +162,9 @@ namespace util
 		// if the value member is null
 		// set the map's value for the current key to the value parameter (use map.set)
 		// set the value member of the wrapper to the rValue (you can use the value returned from map.set)
-		if (&value == NULL)
+		if (value == NULL)
 		{
-			ValueType* vType = map.set(key, rValue);
-			value = vType;
+			value = map.set(key, rValue);
 		}
 		else
 		{
@@ -184,6 +174,6 @@ namespace util
 			*value = rValue;
 		}
 		//return the rValue parameter
-		return rValue;
+		return *value;
 	}
 }
