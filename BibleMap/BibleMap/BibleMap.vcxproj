@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E869FBE4-8CF3-4C40-8499-A32070458A03}</ProjectGuid>
+    <ProjectGuid>{D0D9194D-753E-4583-9772-B0F042095BA1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>BibleMapOOP</RootNamespace>
+    <RootNamespace>BibleMap</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -78,14 +78,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Verse.cpp" />
-    <ClCompile Include="VerseKey.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Verse.h" />
     <ClInclude Include="VerseKey.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BibleSearcher.cpp" />
+    <ClCompile Include="Verse.cpp" />
+    <ClCompile Include="VerseKey.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
