@@ -82,7 +82,7 @@ namespace util
 	{
 		//if the key is already in the keys list,
 		//change the value corresponding to that key value passed to this method
-		if (map.find(key) != NULL)
+		if (find(key))
 		{
 			values[key] = value;
 		}
@@ -111,13 +111,12 @@ namespace util
 		value = map.find(key);
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//template <typename KeyType, typename ValueType>
-	//Map<KeyType, ValueType>::Wrapper::Wrapper(const Wrapper& rValue)
-	//{
-	//	//in the member initialization list - set the map, the key, and the value
-	//	//members to the values passed to the constructor
-	//}
+	template <typename KeyType, typename ValueType>
+	Map<KeyType, ValueType>::Wrapper::Wrapper(const Wrapper& rValue)
+	{
+		//in the member initialization list - set the map, the key, and the value
+		//members to the values passed to the constructor
+	}
 
 	template <typename KeyType, typename ValueType>
 	Map<KeyType, ValueType>::Wrapper::operator ValueType&()
@@ -164,7 +163,6 @@ namespace util
 		{
 			cout << "Key not found in map." << endl;
 		}
-
 	}
 
 	template <typename KeyType, typename ValueType>
@@ -173,11 +171,18 @@ namespace util
 		// if the value member is null
 		// set the map's value for the current key to the value parameter (use map.set)
 		// set the value member of the wrapper to the rValue (you can use the value returned from map.set)
-
-		//if the value member is NOT null
-		//set the member value to the value parameter
-		//(you will need to dereference the member value to make this assignment)
-
+		if (&value == NULL)
+		{
+			ValueType* vType = map.set(key, rValue);
+			value = vType;
+		}
+		else
+		{
+			//if the value member is NOT null
+			//set the member value to the value parameter
+			//(you will need to dereference the member value to make this assignment)
+			*value = rValue;
+		}
 		//return the rValue parameter
 		return rValue;
 	}

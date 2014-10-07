@@ -6,6 +6,7 @@ public:
 	VerseKey();
 	virtual ~VerseKey();
 
+
 private:
 	std::string book;
 	int chapter;
