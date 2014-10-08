@@ -153,7 +153,6 @@ namespace util
 		{
 			return value;
 		}
-
 	}
 
 	template <typename KeyType, typename ValueType>

@@ -3,9 +3,9 @@
 class VerseKey
 {
 public:
-	VerseKey();
+	VerseKey(std::string book, int chapter, int verse);
 	virtual ~VerseKey();
-
+	
 
 private:
 	std::string book;
