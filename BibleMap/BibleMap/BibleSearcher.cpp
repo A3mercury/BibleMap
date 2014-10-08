@@ -1,33 +1,45 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Map.hpp"
 #include "VerseKey.h"
 #include "Verse.h"
-#include "Bible.h"
 using namespace std;
 
-const string INPUT = "bible.txt";
+const string INPUT = "bible(gen).txt";
 
 void main()
 {
 	util::Map<int, string> BibleMap;
-	Bible BibleObj;
 
-	for (unsigned int i = 0; i < BibleObj.BibleVersesVector.size(); i++)
+	std::ifstream fin(INPUT);
+	if (fin)
 	{
-		string bookName;
-		string chapter;
-		string verse;
+		std::string readline;
+		std::string book;
+		int chapter, verse;
 
-		if (BibleObj.BibleVersesVector.at(i).substr(0, 4) == "Book")
+		getline(fin, readline);
+		while (!fin.eof())
 		{
-			bookName = BibleObj.BibleVersesVector.at(i).substr(8);
+			if (readline.substr(0, 4) == "Book")
+			{
+				book = readline.substr(8);
+			}
+			else
+			{
+
+			}
+
+
+			getline(fin, readline);
 		}
-		else
-		{
-			chapter = BibleObj.BibleVersesVector.at(i).substr(0, 3);
-			verse = BibleObj.BibleVersesVector.at(i).substr(4, 3);
-		}
+
+		fin.close();
+	}
+	else
+	{
+		std::cout << "Input file not found." << std::endl;
 	}
 
 	/*map[1] = "one";
