@@ -68,7 +68,7 @@ namespace util
 		{
 			//if the key is in the list, return the address of the value at that same
 			//index in the values list
-			if (key == keys[i])
+			if (key == keys.at(i))
 			{
 				result = &values[i];
 			}

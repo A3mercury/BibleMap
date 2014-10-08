@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include "Map.hpp"
 #include "VerseKey.h"
 #include "Verse.h"
@@ -10,27 +11,37 @@ const string INPUT = "bible(gen).txt";
 
 void main()
 {
-	util::Map<int, string> BibleMap;
-
 	std::ifstream fin(INPUT);
 	if (fin)
 	{
+		util::Map<VerseKey, Verse> BibleMap;
+
+		std::istringstream sin; // the irony
 		std::string readline;
 		std::string book;
+		std::string verseText;
 		int chapter, verse;
 
 		getline(fin, readline);
 		while (!fin.eof())
 		{
-			if (readline.substr(0, 4) == "Book")
+			if (readline[0] == 'B')
 			{
 				book = readline.substr(8);
 			}
 			else
 			{
+				sin.str(readline);
+				sin >> chapter >> verse;
+				verseText = readline.substr(8);
+				
+				// set values to new VerseKey
+				VerseKey vKey(book, chapter, verse);
+				Verse vText(verseText);
 
+				BibleMap[vKey] = vText;
+		
 			}
-
 
 			getline(fin, readline);
 		}
